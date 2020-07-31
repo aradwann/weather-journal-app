@@ -2,12 +2,16 @@
 const zipInput = document.querySelector('#zip');
 const generateButton = document.querySelector('#generate');
 const feelingsInput = document.querySelector('#feelings');
+const date = document.querySelector('#date');
+const temp = document.querySelector('#temp');
+const content = document.querySelector('#content');
 const apiKey = '6c753462a5264baf80f705541b8570ca';
 const countryCode = 'us'
 const postedData = {}
-// postData function 
+
+// postData fuction to send data to server 
 const postData = async (url = '', data = {}) => {
-    console.log(data);
+    // console.log(data);
     const response = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
@@ -19,24 +23,38 @@ const postData = async (url = '', data = {}) => {
     });
     try {
         const newData = await response.json();
-        console.log(newData);
+        // console.log(newData);
         return newData;
     } catch (error) {
         console.log("error", error);
     }
 }
 
-// fetch data from the openweathermap api
+// fetch data from the openweathermap api 
+// then send it to the server with the other two pieces of data
+// so postedData object has three pieces date, feelings, temperature
+// after posting data successfull retrieve it and update the UI
 const getTemp = (zipCode) => {
     const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode},${countryCode}&appid=${apiKey}`;
 
     fetch(url)
         .then((resp) => { return resp.json() }) // Convert data to json
         .then((data) => {
+            // add temperature to postedData object
             postedData['temperature'] = data.main.temp;
-            console.log(postedData);
+            // console.log(postedData);
         }).then(() => {
+            // send postedData object to the server
             postData('/postData', postedData);
+        }).then(() => {
+            fetch('/getData')
+                .then((respo) => { return respo.json() })
+                .then((dat) => {
+                    console.log(dat);
+                    date.innerHTML = `<p> date: ${dat.date} </p>`;
+                    content.innerHTML = `<p> feeling: ${dat.feelings} </p>`;
+                    temp.innerHTML = `<p> temperature: ${dat.temperature} </p>`;
+                })
         })
         .catch(() => {
             // catch any errors
