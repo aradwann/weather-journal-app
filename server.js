@@ -29,6 +29,7 @@ app.get('/getData', getData);
 const postData = (req, res) => {
     let data = req.body;
     console.log(data);
+    projectData = data;
 };
 app.post('/postData', postData);
 
