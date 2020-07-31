@@ -1,10 +1,10 @@
 /* Global Variables */
 const zipInput = document.querySelector('#zip');
 const generateButton = document.querySelector('#generate');
+const feelingsInput = document.querySelector('#feelings');
 const apiKey = '6c753462a5264baf80f705541b8570ca';
-// let zipCode = 90001;
 const countryCode = 'us'
-
+const postedData = {}
 // postData function 
 const postData = async (url = '', data = {}) => {
     console.log(data);
@@ -33,7 +33,10 @@ const getTemp = (zipCode) => {
     fetch(url)
         .then((resp) => { return resp.json() }) // Convert data to json
         .then((data) => {
-            console.log(data.main.temp);
+            postedData['temperature'] = data.main.temp;
+            console.log(postedData);
+        }).then(() => {
+            postData('/postData', postedData);
         })
         .catch(() => {
             // catch any errors
@@ -44,7 +47,10 @@ const getTemp = (zipCode) => {
 // event listener function to get zipcode value and fetch data with it
 const getZipCode = (e) => {
     let zip = zipInput.value;
+    let feelings = feelingsInput.value;
     getTemp(zip);
+    postedData['feelings'] = feelings;
+    postedData['date'] = newDate;
 };
 
 // get temprature data when generate button is clicked
