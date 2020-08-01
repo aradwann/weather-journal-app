@@ -5,7 +5,7 @@ const feelingsInput = document.querySelector('#feelings');
 const date = document.querySelector('#date');
 const temp = document.querySelector('#temp');
 const content = document.querySelector('#content');
-const apiKey = '6c753462a5264baf80f705541b8570ca';
+const apiKey = 'b8aa97ae33c5142d6a4e2a1269bf036a';
 const countryCode = 'us'
 const postedData = {}
 
@@ -53,7 +53,7 @@ const getTemp = (zipCode) => {
                     console.log(dat);
                     date.innerHTML = `<p> date: ${dat.date} </p>`;
                     content.innerHTML = `<p> feeling: ${dat.feelings} </p>`;
-                    temp.innerHTML = `<p> temperature: ${dat.temperature} </p>`;
+                    temp.innerHTML = `<p> temperature: ${dat.temperature} Fahrenheit </p>`;
                 })
         })
         .catch(() => {
